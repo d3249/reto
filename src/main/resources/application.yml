@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active: qa
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: none
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:vacunacion
+  sql:
+    init:
+      data-locations: classpath:sql/data/datos_iniciales.sql
+      schema-locations: classpath:sql/schema/h2_schema.sql
+kruger:
+  vacunas:
+    usuario: admin
+    password: password
+---
+spring:
+  config:
+    activate:
+      on-profile: qa
+  datasource:
+    url: ${PG_URL}
+    username: ${PG_USERNAME}
+    password: ${PG_PASSWORD}
+  sql:
+    init:
+      data-locations: classpath:sql/data/datos_iniciales.sql
+      schema-locations: classpath:sql/schema/pg_schema.sql
+kruger:
+  vacunas:
+    usuario: ${ADMIN}
+    password: ${PASSWORD}
