@@ -1,15 +1,13 @@
-drop table if exists inventario_vacuna cascade;
 create table inventario_vacuna
 (
-    id          uuid primary key default gen_random_uuid(),
+    id          uuid default RANDOM_UUID() primary key,
     marca       varchar(50) not null unique,
     existencias int         not null
 );
 
-drop table if exists ciudadano cascade;
 create table ciudadano
 (
-    id                 uuid primary key default gen_random_uuid(),
+    id                 uuid default RANDOM_UUID() primary key,
     cedula             varchar(11)  not null unique,
     nombres            varchar(255) not null,
     apellidos          varchar(255) not null,

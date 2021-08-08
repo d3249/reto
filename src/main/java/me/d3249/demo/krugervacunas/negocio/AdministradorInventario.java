@@ -4,6 +4,7 @@ import me.d3249.demo.krugervacunas.excepcion.MarcaDuplicadaException;
 import me.d3249.demo.krugervacunas.excepcion.ValorInvalidoException;
 import me.d3249.demo.krugervacunas.modelo.InventarioVacuna;
 import me.d3249.demo.krugervacunas.persistencia.InventarioVacunaRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@PreAuthorize("hasAuthority('ADMINISTRADOR')")
 public class AdministradorInventario {
 
     private final InventarioVacunaRepository repository;
