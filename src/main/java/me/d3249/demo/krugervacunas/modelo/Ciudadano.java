@@ -3,15 +3,30 @@ package me.d3249.demo.krugervacunas.modelo;
 import me.d3249.demo.krugervacunas.excepcion.ValorInvalidoException;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 public class Ciudadano {
 
+
     public enum NivelEnfermedad {
-        NO_TIENE, LEVE, GRAVE
+
+        NO_TIENE(3), LEVE(2), GRAVE(1);
+
+        NivelEnfermedad(int peso) {
+            this.peso = peso;
+        }
+
+        public final int peso;
+
+    }
+
+    public enum Estatus {
+        PENDIENTE, PROGRAMADO
     }
 
     @Id
@@ -39,6 +54,11 @@ public class Ciudadano {
     @Enumerated(EnumType.STRING)
     private NivelEnfermedad nivelEnfermedad;
 
+    @Enumerated(EnumType.STRING)
+    private Estatus estatus;
+
+    private Instant fechaRegistro;
+
     protected Ciudadano() {
     }
 
@@ -53,6 +73,13 @@ public class Ciudadano {
         setCorreoElectronico(correoElectronico);
         setNivelEnfermedad(nivelEnfermedad);
 
+        this.estatus = Estatus.PENDIENTE;
+        this.fechaRegistro = Instant.now();
+
+    }
+
+    public int edad() {
+        return Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }
 
 
@@ -78,6 +105,42 @@ public class Ciudadano {
 
     public NivelEnfermedad nivelEnfermedad() {
         return getNivelEnfermedad();
+    }
+
+    public Instant fechaRegistroUTC() {
+        return fechaRegistro;
+    }
+
+    public Estatus estatus() {
+        return estatus;
+    }
+
+    public void marcarProgramado() {
+        estatus = Estatus.PROGRAMADO;
+    }
+
+    protected Estatus getEstatus() {
+        return estatus;
+    }
+
+    protected void setEstatus(Estatus estatus) {
+        this.estatus = estatus;
+    }
+
+    protected UUID getId() {
+        return id;
+    }
+
+    protected void setId(UUID id) {
+        this.id = id;
+    }
+
+    protected Instant getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    protected void setFechaRegistro(Instant fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     protected NivelEnfermedad getNivelEnfermedad() {

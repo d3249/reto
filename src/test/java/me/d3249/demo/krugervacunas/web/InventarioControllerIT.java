@@ -53,6 +53,27 @@ class InventarioControllerIT {
     }
 
     @Test
+    @Order(0)
+    void datosIniciales() {
+        List.of(new Inventario("Sputnik", 10),
+                new Inventario("AstraZeneca", 25),
+                new Inventario("Pfizer", 32),
+                new Inventario("Moderna", 12),
+                new Inventario("Sinovac", 20)
+        ).forEach(i ->
+                getRequest()
+                        .contentType(ContentType.JSON)
+                        .body(i)
+                        .patch("/api/inventario/{marca}", i.getMarca())
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+
+        );
+
+    }
+
+    @Test
     @Order(1)
     void unaPeticionNoAutenticadaDevuelveEstatus401() {
         get("/api/inventario")
@@ -64,7 +85,7 @@ class InventarioControllerIT {
 
     @Test
     @Order(2)
-    void recuperaListaDeVacunas()  {
+    void recuperaListaDeVacunas() {
 
         var resultado = getRequest()
                 .get("/api/inventario")
@@ -139,7 +160,7 @@ class InventarioControllerIT {
     @Order(6)
     void actualizarConValorNegativoDaError400() {
 
-         getRequest()
+        getRequest()
                 .contentType(ContentType.JSON)
                 .body(new Inventario(null, -50))
                 .patch("/api/inventario/{marca}", vacuna1.getMarca())

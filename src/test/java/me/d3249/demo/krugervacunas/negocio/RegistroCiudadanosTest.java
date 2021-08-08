@@ -70,4 +70,27 @@ class RegistroCiudadanosTest {
 
         assertThat(resultado).containsExactly(CIUDADANO_3, CIUDADANO_2, CIUDADANO_1);
     }
+
+    @Test
+    void actualizaEstatusDeCiudadanos() {
+
+        sut.marcarProgramados(List.of(CIUDADANO_1, CIUDADANO_2, CIUDADANO_3));
+
+        assertThat(CIUDADANO_1.estatus()).isEqualTo(Ciudadano.Estatus.PROGRAMADO);
+        assertThat(CIUDADANO_2.estatus()).isEqualTo(Ciudadano.Estatus.PROGRAMADO);
+        assertThat(CIUDADANO_3.estatus()).isEqualTo(Ciudadano.Estatus.PROGRAMADO);
+
+        verify(repository).saveAll(List.of(CIUDADANO_1, CIUDADANO_2, CIUDADANO_3));
+    }
+
+    @Test
+    void listaSoloPendientes() {
+
+        given(repository.findByEstatus(Ciudadano.Estatus.PENDIENTE)).willReturn(List.of(CIUDADANO_1, CIUDADANO_2));
+
+        var resultado = sut.listaPendientes();
+
+        assertThat(resultado).containsExactly(CIUDADANO_1, CIUDADANO_2);
+
+    }
 }

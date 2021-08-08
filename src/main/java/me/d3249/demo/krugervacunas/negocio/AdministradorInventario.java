@@ -1,11 +1,14 @@
 package me.d3249.demo.krugervacunas.negocio;
 
 import me.d3249.demo.krugervacunas.excepcion.MarcaDuplicadaException;
+import me.d3249.demo.krugervacunas.excepcion.SinDisponibilidadException;
 import me.d3249.demo.krugervacunas.excepcion.ValorInvalidoException;
 import me.d3249.demo.krugervacunas.modelo.InventarioVacuna;
 import me.d3249.demo.krugervacunas.persistencia.InventarioVacunaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
 import java.util.List;
@@ -44,5 +47,21 @@ public class AdministradorInventario {
         registroInventario.actualizarExistencias(existencia);
 
         return repository.save(registroInventario);
+    }
+
+    public String asignar(List<String> marcas) throws SinDisponibilidadException {
+
+        var lista = repository.findByMarcaIn(marcas).stream().sorted((i1, i2) -> i2.existencias() - i1.existencias());
+
+        var inventarioAsignado = lista.findFirst().orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No hay registro de vacunas solicitadas"));
+
+        if (inventarioAsignado.existencias() == 0)
+            throw new SinDisponibilidadException("No existe disponibilidad de las vacunas solicitada");
+
+        inventarioAsignado.actualizarExistencias(inventarioAsignado.existencias() - 1);
+        repository.save(inventarioAsignado);
+
+        return inventarioAsignado.marca();
     }
 }

@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private static final String PERFIL = "ADMINISTRADOR";
+
     private final String usuario;
     private final String password;
 
@@ -34,14 +36,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         //En producción se usaría un servidor de autorización, por ejemplo Keycloak
         auth.inMemoryAuthentication()
-                .withUser(usuario).password(passwordEncoder().encode(password)).authorities("ADMINISTRADOR");
+                .withUser(usuario).password(passwordEncoder().encode(password)).authorities(PERFIL);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/api/inventario/**").hasAuthority("ADMINISTRADOR")
+                .antMatchers("/api/inventario/**").hasAuthority(PERFIL)
+                .antMatchers("/api/agenda/**").hasAuthority(PERFIL)
                 // Suponiendo que este es un servicio público, los ciudadanos no necesitarán autenticarse para registrarse
                 .antMatchers("/api/**").permitAll()
                 .and()

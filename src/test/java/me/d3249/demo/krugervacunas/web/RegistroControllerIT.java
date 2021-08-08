@@ -62,7 +62,7 @@ class RegistroControllerIT {
         given()
                 .contentType(ContentType.JSON)
                 .body(new Registro(cedula, nombres, apellidos, LocalDate.now(), email, Ciudadano.NivelEnfermedad.GRAVE))
-                .post("/registro")
+                .post("/api/registro")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
@@ -74,10 +74,10 @@ class RegistroControllerIT {
         given()
                 .contentType(ContentType.JSON)
                 .body(new Registro(CEDULA_1, NOMBRES_1, APELLIDOS_1, FECHA_1, EMAIL_1, Ciudadano.NivelEnfermedad.GRAVE))
-                .post("/registro")
+                .post("/api/registro")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.CREATED.value());
 
     }
 }

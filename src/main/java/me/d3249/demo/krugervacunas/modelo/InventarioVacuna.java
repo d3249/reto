@@ -76,11 +76,11 @@ public class InventarioVacuna {
         if (this == o) return true;
         if (!(o instanceof InventarioVacuna)) return false;
         InventarioVacuna that = (InventarioVacuna) o;
-        return Objects.equals(getId(), that.getId()) && getMarca().equals(that.getMarca());
+        return getMarca().equals(that.getMarca());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getMarca());
+        return Objects.hash(getMarca());
     }
 }

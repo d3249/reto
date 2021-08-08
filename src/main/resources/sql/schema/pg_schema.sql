@@ -15,5 +15,16 @@ create table ciudadano
     apellidos          varchar(255) not null,
     fecha_nacimiento   date         not null,
     correo_electronico varchar(255) not null,
-    nivel_enfermedad   varchar(8)   not null
+    nivel_enfermedad   varchar(8)   not null,
+    estatus            varchar(10)  not null,
+    fecha_registro     timestamp    not null
 );
+
+drop table if exists cita cascade;
+create table cita
+(
+    id           uuid  primary key default gen_random_uuid(),
+    fk_ciudadano uuid references ciudadano (id) not null,
+    fecha        date                           not null,
+    marca        varchar(50)
+)

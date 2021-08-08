@@ -8,6 +8,10 @@ spring:
     hibernate:
       ddl-auto: none
 ---
+logging:
+  level:
+    me.d3249.demo.krugervacunas: DEBUG
+
 spring:
   config:
     activate:
@@ -22,6 +26,7 @@ kruger:
   vacunas:
     usuario: admin
     password: password
+    capacidad_diaria: 5
 ---
 spring:
   config:
@@ -39,3 +44,4 @@ kruger:
   vacunas:
     usuario: ${ADMIN}
     password: ${PASSWORD}
+    capacidad_diaria: 5

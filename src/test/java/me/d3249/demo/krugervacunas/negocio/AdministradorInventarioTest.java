@@ -1,6 +1,7 @@
 package me.d3249.demo.krugervacunas.negocio;
 
 import me.d3249.demo.krugervacunas.excepcion.MarcaDuplicadaException;
+import me.d3249.demo.krugervacunas.excepcion.SinDisponibilidadException;
 import me.d3249.demo.krugervacunas.excepcion.ValorInvalidoException;
 import me.d3249.demo.krugervacunas.modelo.InventarioVacuna;
 import me.d3249.demo.krugervacunas.persistencia.InventarioVacunaRepository;
@@ -17,19 +18,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class AdministradorInventarioTest {
-    private final int existenciaInicial = 0;
+    private final int EXISTENCIA_INICIAL_1 = 10;
+    private final int EXISTENCIA_INICIAL_2 = 30;
+    private final int EXISTENCIA_INICIAL_3 = 35;
 
     private final String marca1 = "AstraZeneca";
-    private final InventarioVacuna registro1 = new InventarioVacuna(marca1, existenciaInicial);
+    private final InventarioVacuna registro1 = new InventarioVacuna(marca1, EXISTENCIA_INICIAL_1);
 
     private final String marca2 = "Sputnik";
-    private final InventarioVacuna registro2 = new InventarioVacuna(marca2, existenciaInicial);
+    private final InventarioVacuna registro2 = new InventarioVacuna(marca2, EXISTENCIA_INICIAL_2);
 
     private final String marca3 = "Sinovac";
-    private final InventarioVacuna registro3 = new InventarioVacuna(marca3, existenciaInicial);
+    private final InventarioVacuna registro3 = new InventarioVacuna(marca3, EXISTENCIA_INICIAL_3);
 
     @Mock
     InventarioVacunaRepository repository;
@@ -46,7 +50,7 @@ class AdministradorInventarioTest {
     void registraUnaNuevaMarcaConInventarioInicial() {
         when(repository.save(any())).thenAnswer(context -> context.getArgument(0));
 
-        InventarioVacuna resultado = sut.registrarMarca(marca1, existenciaInicial);
+        InventarioVacuna resultado = sut.registrarMarca(marca1, EXISTENCIA_INICIAL_1);
 
         assertThat(resultado).isEqualTo(registro1);
     }
@@ -77,7 +81,7 @@ class AdministradorInventarioTest {
     }
 
     @Test
-    void lanzaExcepcionSiLaMarcaNoSeEncuentra(){
+    void lanzaExcepcionSiLaMarcaNoSeEncuentra() {
 
         when(repository.findByMarca(marca1)).thenReturn(Optional.empty());
 
@@ -89,6 +93,30 @@ class AdministradorInventarioTest {
 
         when(repository.existsByMarca(marca1)).thenReturn(true);
 
-        assertThrows(MarcaDuplicadaException.class, () -> sut.registrarMarca(marca1, existenciaInicial));
+        assertThrows(MarcaDuplicadaException.class, () -> sut.registrarMarca(marca1, EXISTENCIA_INICIAL_1));
+    }
+
+    @Test
+    void asignaLaDeMayorDisponibilidad() throws SinDisponibilidadException {
+
+        given(repository.findByMarcaIn(List.of(marca1, marca2))).willReturn(List.of(registro1, registro2));
+
+        var marcaAsignada = sut.asignar(List.of(marca1, marca2));
+
+        assertThat(marcaAsignada).isEqualTo(marca2);
+
+        verify(repository).save(new InventarioVacuna(marca2, EXISTENCIA_INICIAL_2 - 1));
+    }
+
+    @Test
+    void siElInventarioEstaVacioLanzaExepcion() {
+
+        registro1.actualizarExistencias(0);
+        registro2.actualizarExistencias(0);
+
+        given(repository.findByMarcaIn(List.of(marca1, marca2))).willReturn(List.of(registro1, registro2));
+
+        assertThrows(SinDisponibilidadException.class, () -> sut.asignar(List.of(marca1, marca2)));
+
     }
 }
