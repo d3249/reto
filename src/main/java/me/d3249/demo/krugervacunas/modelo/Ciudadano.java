@@ -66,11 +66,11 @@ public class Ciudadano {
                      LocalDate fechaNacimiento, String correoElectronico,
                      NivelEnfermedad nivelEnfermedad) {
 
-        setCedula(cedula);
-        setNombres(nombres);
-        setApellidos(apellidos);
+        setCedula(new Cedula(cedula));
+        setNombres(new ComponenteNombre(nombres));
+        setApellidos(new ComponenteNombre(apellidos));
         setFechaNacimiento(fechaNacimiento);
-        setCorreoElectronico(correoElectronico);
+        setCorreoElectronico(new CorreoElectronico(correoElectronico));
         setNivelEnfermedad(nivelEnfermedad);
 
         this.estatus = Estatus.PENDIENTE;
@@ -81,7 +81,6 @@ public class Ciudadano {
     public int edad() {
         return Period.between(fechaNacimiento, LocalDate.now()).getYears();
     }
-
 
     public String cedula() {
         return getCedula().getNumeroCedula();
@@ -162,7 +161,6 @@ public class Ciudadano {
         this.cedula = cedula;
     }
 
-
     protected ComponenteNombre getNombres() {
         return nombres;
     }
@@ -197,24 +195,6 @@ public class Ciudadano {
 
     protected void setCorreoElectronico(CorreoElectronico correoElectronico) {
         this.correoElectronico = correoElectronico;
-    }
-
-    private void setCedula(String cedula) {
-
-        setCedula(new Cedula(cedula));
-    }
-
-    private void setNombres(String nombres) {
-        setNombres(new ComponenteNombre(nombres));
-    }
-
-    private void setApellidos(String apellidos) {
-        setApellidos(new ComponenteNombre(apellidos));
-
-    }
-
-    private void setCorreoElectronico(String correoElectronico) {
-        setCorreoElectronico(new CorreoElectronico(correoElectronico));
     }
 
     @Override
