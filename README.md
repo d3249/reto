@@ -2,6 +2,19 @@
 
 Link de [Google Classroom](https://classroom.google.com/c/MzE5MDA3NTU3NjQ4)
 
+## Sobre el formato de cédula
+
+La definición pide usar el formato de cédula de identidad de Ecuador, sin definir el mismo.
+
+En una investigación extraoficial se encontró el siguiente formato.
+
+```
+000000000-0
+```
+
+En caso de no ser este el formato correcto, se deberá cambiar la expresión regular de validación 
+y los casos de prueba asociados.
+
 ## API
 Una vez levantado el sistema, la documentación se encontrará en las siguientes rutas
 
