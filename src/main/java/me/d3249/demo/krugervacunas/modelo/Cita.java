@@ -30,6 +30,10 @@ public class Cita {
         return getCiudadano();
     }
 
+    public String marca(){
+        return getMarca();
+    }
+
     protected UUID getId() {
         return id;
     }

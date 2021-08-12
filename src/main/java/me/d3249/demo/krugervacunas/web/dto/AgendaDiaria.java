@@ -5,9 +5,9 @@ import java.util.List;
 
 public class AgendaDiaria {
     private final LocalDate fecha;
-    private final List<Registro> registros;
+    private final List<RegistroCita> registros;
 
-    public AgendaDiaria(LocalDate fecha, List<Registro> registros) {
+    public AgendaDiaria(LocalDate fecha, List<RegistroCita> registros) {
         this.fecha = fecha;
         this.registros = registros;
     }
@@ -16,7 +16,7 @@ public class AgendaDiaria {
         return fecha;
     }
 
-    public List<Registro> getRegistros() {
+    public List<RegistroCita> getRegistros() {
         return registros;
     }
 }

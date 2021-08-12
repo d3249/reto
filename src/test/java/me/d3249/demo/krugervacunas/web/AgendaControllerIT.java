@@ -4,8 +4,8 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import me.d3249.demo.krugervacunas.modelo.Ciudadano;
 import me.d3249.demo.krugervacunas.web.dto.AgendaDiaria;
-import me.d3249.demo.krugervacunas.web.dto.Inventario;
 import me.d3249.demo.krugervacunas.web.dto.Registro;
+import me.d3249.demo.krugervacunas.web.dto.RegistroCita;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -32,13 +32,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AgendaControllerIT {
     private static final Logger log = LoggerFactory.getLogger(AgendaControllerIT.class);
 
-    private static final Registro REGISTRO_1 = new Registro("000023401-0", "nombre", "apellidos", LocalDate.parse("1984-04-03"), "falso1@falso.com", Ciudadano.NivelEnfermedad.NO_TIENE);
-    private static final Registro REGISTRO_2 = new Registro("000003451-0", "nombre", "apellidos", LocalDate.parse("2000-10-03"), "falso2@falso.com", Ciudadano.NivelEnfermedad.GRAVE);
-    private static final Registro REGISTRO_3 = new Registro("002342301-0", "nombre", "apellidos", LocalDate.parse("1998-06-03"), "falso3@falso.com", Ciudadano.NivelEnfermedad.NO_TIENE);
-    private static final Registro REGISTRO_4 = new Registro("004500001-0", "nombre", "apellidos", LocalDate.parse("1954-11-03"), "falso4@falso.com", Ciudadano.NivelEnfermedad.LEVE);
-    private static final Registro REGISTRO_5 = new Registro("000003411-0", "nombre", "apellidos", LocalDate.parse("1988-01-03"), "falso5@falso.com", Ciudadano.NivelEnfermedad.NO_TIENE);
-    private static final Registro REGISTRO_6 = new Registro("342000001-0", "nombre", "apellidos", LocalDate.parse("2001-08-03"), "falso6@falso.com", Ciudadano.NivelEnfermedad.GRAVE);
-    private static final Registro REGISTRO_7 = new Registro("003453001-0", "nombre", "apellidos", LocalDate.parse("2000-05-03"), "falso7@falso.com", Ciudadano.NivelEnfermedad.GRAVE);
+    private static final Registro REGISTRO_1 = new RegistroCita("000023401-0", "nombre", "apellidos", LocalDate.parse("1984-04-03"), "falso1@falso.com", Ciudadano.NivelEnfermedad.NO_TIENE, "Pfizer");
+    private static final Registro REGISTRO_2 = new RegistroCita("000003451-0", "nombre", "apellidos", LocalDate.parse("2000-10-03"), "falso2@falso.com", Ciudadano.NivelEnfermedad.GRAVE, "Pfizer");
+    private static final Registro REGISTRO_3 = new RegistroCita("002342301-0", "nombre", "apellidos", LocalDate.parse("1998-06-03"), "falso3@falso.com", Ciudadano.NivelEnfermedad.NO_TIENE, "Pfizer");
+    private static final Registro REGISTRO_4 = new RegistroCita("004500001-0", "nombre", "apellidos", LocalDate.parse("1954-11-03"), "falso4@falso.com", Ciudadano.NivelEnfermedad.LEVE, "Pfizer");
+    private static final Registro REGISTRO_5 = new RegistroCita("000003411-0", "nombre", "apellidos", LocalDate.parse("1988-01-03"), "falso5@falso.com", Ciudadano.NivelEnfermedad.NO_TIENE, "Pfizer");
+    private static final Registro REGISTRO_6 = new RegistroCita("342000001-0", "nombre", "apellidos", LocalDate.parse("2001-08-03"), "falso6@falso.com", Ciudadano.NivelEnfermedad.GRAVE, "Pfizer");
+    private static final Registro REGISTRO_7 = new RegistroCita("003453001-0", "nombre", "apellidos", LocalDate.parse("2000-05-03"), "falso7@falso.com", Ciudadano.NivelEnfermedad.GRAVE, "Pfizer");
 
     private static final LocalDate FECHA = LocalDate.parse("2020-12-31", DateTimeFormatter.ISO_DATE);
 
